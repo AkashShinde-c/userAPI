@@ -1,18 +1,35 @@
-const express = require('express')
-const app = express()
-const user_routes = require("./routes/users")
+//importing the required packages
+require("dotenv").config();
+const express = require("express");
+const app = express();
+const user_routes = require("./routes/users");
+const connectDB = require("./db/connect");
 
 const users = [
-    {
-        id:1,
-        name: 'AK'
-    }
-]
+  {
+    id: 1,
+    name: "AK",
+  },
+];
 
-app.get('/',(req, res)=>{
-    res.send("Hello there")
-})
+app.get("/", (req, res) => {
+  res.send("Hello there");
+});
 
-app.use("/api/users", user_routes)
+//middleware for th routes
+app.use("/api/users", user_routes);
 
-app.listen(6022)
+//function to start the server and connect to database
+const start = async () => {
+  await connectDB(process.env.MONGODB_URL);
+
+  try {
+    app.listen(6022);
+    console.log("Server is running");
+  } catch (error) {
+    console.log(error.msg);
+  }
+};
+
+//initiating the server with start function
+start();
