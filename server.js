@@ -5,6 +5,8 @@ const app = express();
 const user_routes = require("./routes/users");
 const connectDB = require("./db/connect");
 
+app.use(express.json());
+
 const users = [
   {
     id: 1,
@@ -17,10 +19,11 @@ app.get("/", (req, res) => {
 });
 
 //middleware for th routes
-app.use("/api/users", user_routes);
+app.use("/users", user_routes);
 
 //function to start the server and connect to database
 const start = async () => {
+  
   await connectDB(process.env.MONGODB_URL);
 
   try {
